@@ -1,0 +1,210 @@
+<!DOCTYPE HTML>
+<!--
+	Editorial by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Chase Dixon</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+		<link href="../assets/css/prism.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../assets/css/main.css" />
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Main -->
+					<div id="main">
+						<div class="inner">
+
+							<!-- Header -->
+								<header id="header">
+									<a href="../index.html" class="logo"><strong>Hangman</strong></a>
+									<ul class="icons">
+										<li><a href="https://www.linkedin.com/in/chase-dixon-03a364121/" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
+										<li><a href="mailto:chase.dixon1@gmail.com" class="icon fa-solid fa-envelope-open"><span class="label">Email</span></a></li>
+									</ul>
+								</header>
+
+							<!-- Banner -->
+								<section id="banner">
+									<div class="row">
+										<div class="col col-md-5">
+											<h3>Project Description</h3>
+                                            <p>Worked in a team to develop a web-based hangman game. Required a user to log in to play, and kept track of high scores based on incorrect guesses.</p>
+                                            <h3>Frameworks/Languages Utilized</h3>
+                                            <ul>
+                                                <li>Angular</li>
+                                                <li>Entity Framework (SQLite)</li>
+                                                <li>.NET Core 5.0 (C#)</li>
+                                            </ul>
+                                            <h3>My Contributions</h3>
+											<ul>
+												<li>Set up database/models with Entity Framework</li>
+												<li>Established High Score functionality</li>
+												<li>Instituted user authentication</li>
+											</ul>
+                                            <h3>Challenges:</h3>
+                                            <p>Only one member of our team had previous experience with Angular and .NET prior to this project, so the primary challenge we had as a team was learning the frameworks.</p>
+											<p>In learning the frameworks, my greatest challenge was finding a way to keep a user logged in when the page was refreshed. Once I was able to implement session variables on the backend, I was able to instantiate subscriptions to those variables with each page load in Angular, allowing the front end to properly check a user's authentication status before loading a page.</p>
+											<ul class="actions">
+												<li><a href="https://github.com/chasedixon/chasedixon.github.io/tree/main/portfolio/hangman" target="_blank" class="button big">View Code</a></li>
+											</ul>
+										</div>
+										<div class="col col-md-7">
+												<img class="img-fluid border border-dark rounded" src="../images/hangman_1.jpg" alt="" />
+										</div>
+									</div>
+								</section>
+
+							<!-- Section -->
+								<section>
+									<header class="major" id="portfolio">
+										<h2>Photos/Code Snippets</h2>
+									</header>
+									<div class="posts">
+										<article>
+											<img class="img-fluid border border-dark rounded" src="../images/hangman_0.jpg" />
+										</article>
+										<article>
+											<img class="img-fluid border border-dark rounded" src="../images/hangman_1.jpg" />
+										</article>
+										<article>
+											<img class="img-fluid border border-dark rounded" src="../images/hangman_2.jpg" />
+										</article>
+										<article>
+											<img class="img-fluid border border-dark rounded" src="../images/hangman_3.jpg" />
+										</article>
+										<article>
+											<img class="img-fluid border border-dark rounded" src="../images/hangman_4.jpg" />
+										</article>
+										<article>
+											<pre class="bg-light"><code class="language-csharp">// Add new user to database
+public bool AddUser(Login login)
+{
+	// salt and hash password, add to database
+	try
+	{
+		if (_ctx.Users.Select(u => u.Username).Contains(login.Username))
+		{
+			// username already exists!
+			return false;
+		}
+
+		var salt = GenerateSalt();
+		var password = GenerateHash(login.Password + salt);
+		var user = new User { Username = login.Username, Password = password, Salt = salt };
+		_ctx.Users.Add(user);
+		SetToken(login.Username);
+		SetExpiration(DateTime.Today.AddDays(7).ToString());
+		return _ctx.SaveChanges() > 0;
+	}
+	catch (Exception ex)
+	{
+		Console.WriteLine($"Error Adding user: {ex}");
+		return false;
+	}
+
+}</code></pre>
+										</article>
+
+										<article>
+											<pre class="bg-light">
+												<code class="language-csharp">
+// GetHighScores returns list of top ten high scores, ordered by score
+public IEnumerable<HighScoreDto> GetHighScores()
+{
+	var highScores = _ctx.HighScores
+		.Select(h => h)
+		.Include(h => h.User)
+		.OrderBy(score => score.Score)
+		.Take(10)
+		.ToList();
+
+	var highScoreDtos = new List<HighScoreDto>();
+
+	highScores.ForEach(highScore =>
+	{
+		var hs = new HighScoreDto();
+		hs.Id = highScore.Id;
+		hs.Score = highScore.Score;
+		hs.DateTime = highScore.DateTime;
+		hs.Username = highScore.User.Username;
+		hs.Word = highScore.Word;
+		highScoreDtos.Add(hs);
+	});
+
+	return highScoreDtos;
+}</code></pre>
+										</article>
+									</div>
+								</section>
+						</div>
+					</div>
+
+				<!-- Sidebar -->
+					<div id="sidebar">
+						<div class="inner">
+								<nav class="menu" id="menu">
+									<header class="major">
+										<h2>Menu</h2>
+									</header>
+									<ul>
+										<li><a href="index.html">Welcome</a></li>
+										<li><a href="#skills">Skills</a></li>
+										<li><a href="#portfolio">Portfolio</a></li>
+									</ul>
+								</nav>
+
+								<section class="menu">
+									<header class="major">
+										<h2>Projects</h2>
+									</header>
+										<ul>
+											<li><a href="./speed.html">Speed</a></li>
+											<li><a href="./hangman.html">Hangman</a></li>
+											<li><a href="./dotnet_upgrade.html">.NET Upgrade</a></li>
+											<li><a href="./higher_lower.html">Higher/Lower</a></li>
+										</ul>
+									</li>
+								</section>
+
+							<!-- Section -->
+								<section>
+									<header class="major">
+										<h2>Get in touch</h2>
+									</header>
+									<p>I am open to new opportunities! Here is how you may contact me:</p>
+									<ul class="contact">
+										<li class="icon solid fa-envelope"><a href="mailto:chase.dixon1@gmail.com">chase.dixon1@gmail.com</a></li>
+										<li class="icon solid fa-phone"><a href="tel:+18016631248">(801) 663-1248</a></li>
+										<li class="icon solid fa-paperclip"><a href="files/chase_dixon_resume.pdf" download>Resumé</a></li>
+									</ul>
+								</section>
+
+							<!-- Footer -->
+								<footer id="footer">
+									<p class="copyright">&copy; Chase Dixon. All rights reserved. Design: <a href="https://html5up.net">HTML5 UP</a>.</p>
+								</footer>
+
+						</div>
+					</div>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+			<script src="../assets/js/jquery.min.js"></script>
+			<script src="../assets/js/browser.min.js"></script>
+			<script src="../assets/js/breakpoints.min.js"></script>
+			<script src="../assets/js/util.js"></script>
+			<script src="../assets/js/prism.js"></script>
+			<script src="../assets/js/main.js"></script>
+
+	</body>
+</html>
