@@ -24,7 +24,7 @@
 
 							<!-- Header -->
 								<header id="header">
-									<a href="../index.html" class="logo"><strong>Speed</strong></a>
+									<a href="../index.html" class="logo"><strong>Platter Social</strong></a>
 									<ul class="icons">
 										<li><a href="https://www.linkedin.com/in/chase-dixon-03a364121/" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
 										<li><a href="mailto:chase.dixon1@gmail.com" class="icon fa-solid fa-envelope-open"><span class="label">Email</span></a></li>
@@ -34,31 +34,23 @@
 							<!-- Banner -->
 								<section id="banner">
 									<div class="row">
-										<div class="col col-md-5 col-sm-12">
+										<div class="col col-md-5">
 											<h3 id="project_description">Project Description</h3>
-                                            <p>An asynchronous two-player card game. When two players connect using different browsing sessions, the cards are shuffled and dealt. Each player starts with five cards in their hand and fifteen cards in their draw pile. There are two face-up cards in the center that they drag and drop cards from their hand onto. As a card is played from the hand, it is replaced by a card in the player's draw pile. The players race to play all of their cards before their opponent.</p>
+                                            <p>A social media site for foodies. A registered user can sign in and view "dishes" that other users post, or post their own. Each dish has a title, pictures with captions, and the ability to add a recipe. Users can discover dishes from everyone, or can view a feed of dishes from their followed users. Dishes can be liked and commented on as well.</p>
 											<h3>Frameworks/Languages Utilized</h3>
                                             <ul>
-												<li>.NET Core 6.0 (c#)</li>
-												<li>jQuery</li>
-                                                <li>Razor Pages</li>
-												<li>SignalR</li>
+												<li>Python</li>
+                                                <li>Django</li>
+                                                <li>Sqlite</li>
                                             </ul>
-                                            <h3>My Contributions</h3>
-											<p>I was responsible for the majority of game logic, including all JavaScript/jQuery code and the majority of backend hub/logic code.</p>
-                                            <h3>Challenges</h3>
-											<ul>
-												<li>
-													<p>The main challenge we faced as a group was finding a way of handling two browsing sessions for a single game. Once we discovered SignalR, we followed tutorials for a simple chat interface and worked through ideas on how to adapt those concepts to a two-player game.</p>
-												</li>
-											</ul>
-                                            
+                                            <h3>Challenges:</h3>
+                                            <p>One of the most challenging aspects to this project was making the process of adding a recipe simple for the user, yet maintaining a way for the system to display them uniformly.</p>
 											<ul class="actions">
-												<li><a href="https://github.com/chasedixon/chasedixon.github.io/tree/main/portfolio/speed" target="_blank" class="button big">View Code</a></li>
+												<li><a href="https://github.com/chasedixon/chasedixon.github.io/tree/main/portfolio/platter_social" target="_blank" class="button big">View Code</a></li>
 											</ul>
 										</div>
 										<div class="col col-md-7">
-											<img class="img-fluid border border-dark rounded" src="../images/speed.jpg" alt="" />
+											<img class="img-fluid border border-dark rounded" src="../images/platter_0.jpg" alt="" />
 										</div>
 									</div>
 								</section>
@@ -70,54 +62,43 @@
 									</header>
 									<div class="posts">
 										<article>
-											<img class="img-fluid border border-dark rounded" src="../images/speed_0.jpg"></a>
+											<img class="img-fluid border border-dark rounded" src="../images/platter_1.jpg" alt="" />
 										</article>
 										<article>
-											<img class="img-fluid border border-dark rounded" src="../images/speed_1.jpg"></a>
+											<img class="img-fluid border border-dark rounded" src="../images/platter_2.jpg" alt="" />
 										</article>
-										<article>
-											<img class="img-fluid border border-dark rounded" src="../images/speed_2.jpg"></a>
+                                        <article>
+											<img class="img-fluid border border-dark rounded" src="../images/platter_3.jpg" alt="" />
 										</article>
-										<article>
-											<img class="img-fluid border border-dark rounded" src="../images/speed_3.jpg"></a>
-										</article>
-										<article>
-											<img class="img-fluid border border-dark rounded" src="../images/speed_4.jpg"></a>
-										</article>
-										<article>
-											<img class="img-fluid border border-dark rounded" src="../images/speed_5.jpg"></a>
+                                        <article>
+											<img class="img-fluid border border-dark rounded" src="../images/platter_4.jpg" alt="" />
 										</article>
 										<article>
 											<pre class="bg-light">
-												<code class="language-javascript">
-connection.on("UpdateGame", function (my_hand, my_count, play_one, play_two, opp_count, opp_hand_count) {
-	if (my_hand.length == 0) {
-		$('#speed_btn').show();
-	}
-	$('#game_div').show();
-	$('#waiting_for_game').hide();
-	player_count.innerHTML = my_count;
-	other_count.innerHTML = opp_count;
-	pile_one.src = "../lib/cards/" + play_one;
-	pile_two.src = "../lib/cards/" + play_two;
-	cards = $('.drag').children();
-	$(my_hand).each(function (index, element) {
-		cards[index].src = "../lib/cards/" + element;
-	});
-	for (let i = 0; i < cards.length - my_hand.length; i++) {
-		$(cards).last().remove();
-	}
-	opp_hand = $('.opp_hand');
-	for (let i = 0; i < opp_hand.length - opp_hand_count; i++) {
-		$(opp_hand).last().remove();
-	}
-});
-												</code>
-											</pre>
-										</article>
+												<code class="language-python">
+@login_required
+def follow_feed(request):
+    following = FollowUser.objects.filter(user=request.user)
+    profile_list = list()
+    for follow in following:
+        profile_list.append(follow.follow)
+    posts = Post.objects.filter(profile__in=profile_list).order_by('-time', '-id')
 
-										<article>
+    paginator = Paginator(posts, 10)
+    page = request.GET.get('page')
+    posts = paginator.get_page(page)
 
+    images, comments, like_counts, likes = detail_view(request, posts)
+
+    if request.method == "POST":
+        check_comment_change(request)
+        check_like(request)
+
+    return render(request, 'myapp/follow_feed.html',
+                    {'posts': posts, 'images': images, 'comments': comments, 'like_counts': like_counts, 'likes': likes})
+                                                    
+                                                    
+</code></pre>
 										</article>
 									</div>
 								</section>
