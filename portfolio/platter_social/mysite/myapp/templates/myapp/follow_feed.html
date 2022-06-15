@@ -1,0 +1,14 @@
+{% extends 'myapp/base.html' %}
+{% load static %}
+{% block body %}
+    <div class="row align-items-center">
+        <h1 class="col col-md-9 title mt-3 offset-1">Follow Feed</h1>
+        <div class="col col-md-2">
+            <a href="{% url 'myapp:add_post' %}" class="btn btn-primary">Add Dish</a>
+        </div>
+    </div>
+    {% include 'myapp/detail_view.html' %}
+    {% block detail_view %}
+    {% endblock %}
+    <h6 class="text-center my-5">Looks like you're out of dishes! Time to <a href="{% url 'myapp:discover' %}">Discover</a> something new?</h6>
+{% endblock %}

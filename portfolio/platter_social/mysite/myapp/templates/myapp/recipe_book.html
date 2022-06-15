@@ -1,0 +1,21 @@
+{% extends 'myapp/base.html' %}
+{% block body %}
+    <h1 class="title mt-3 offset-1">Recipe Book</h1>
+        {% for recipe in recipes %}
+            <a href="{% url 'myapp:view_recipe' recipe.recipe.post.id %}" class="text-dark text-decoration-none">
+            <div class="card col-md-10 offset-1 mb-3">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <img src="{{ recipe.recipe.recipe_image.url }}" style="width: 10rem;" class="img-fluid rounded-start" alt="{{ recipe.recipe.title }}">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title mt-5">{{ recipe.recipe.title|title }}</h5>
+                            <p class="card-text mb-5">{{ recipe.recipe.post.profile }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </a>
+        {% endfor %}
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'myapp/base.html' %}
+{% block body %}
+<div class="card mt-3 text-center w-80">
+    <div class="row g-0">
+        <div class="col-md-4 m-3">
+            <img src="{{ profile.image.url }}" style="width: 15rem; height: 15rem; object-fit: cover" class="img-fluid rounded-circle">
+        </div>
+        <div class="col-md-6">
+            <div class="card-body d-flex flex-column h-100 align-items-center">
+                <h5 class="card-title mb-3">Username: {{ profile.user.username }}</h5>
+                <h6 class="card-subtitle mb-3 text-muted">{{ profile.city }}, {{ profile.state }}</h6>
+                {{ profile.bio|linebreaks }}
+                {% if user.profile == profile %}
+                    <a href="{% url 'edit_profile' %}" class="btn btn-primary col-md-4 mt-auto">Edit Profile</a>
+                {% elif following != None %}
+                    <a href="{% url 'unfollow_user' profile.user.id %}" class="btn btn-primary col-md-4 mt-auto">Unfollow</a>
+                {% else %}
+                    <a href="{% url 'follow_user' profile.user.id %}" class="btn btn-primary col-md-4 mt-auto">Follow</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row align-items-center">
+    <h3 class="col col-md-10 title my-3">Dishes</h3>
+    <div class="col">
+    {% if user.profile == profile %}
+        <a href="{% url 'myapp:add_post' %}" class="btn btn-primary float-end">Add Dish</a>
+    {% endif %}
+    </div>
+</div>
+{% include 'myapp/detail_view.html' %}
+{% endblock %}

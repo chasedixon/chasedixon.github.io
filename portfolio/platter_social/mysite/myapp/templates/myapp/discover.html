@@ -1,0 +1,8 @@
+{% extends 'myapp/base.html' %}
+{% load static %}
+{% block body %}
+    <h1 class="title mt-3 offset-1">Discover</h1>
+    <div class="grid col-md-10 offset-1">
+        {% include 'myapp/list_view.html' %}
+    </div>
+{% endblock %}

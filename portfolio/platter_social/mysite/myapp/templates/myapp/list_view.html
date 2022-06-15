@@ -1,0 +1,20 @@
+{% load static %}
+{% for post in posts %}
+    {% if forloop.counter0|divisibleby:3 %}
+        {% if forloop.counter0 != 0 %}
+            </div>
+        {% endif %}
+        <div class="row">
+    {% endif %}
+        <div class="col col-md-4">
+           <div class="card my-3">
+               <a href="{% url 'profile' post.profile.pk %}#post{{ post.id }}" class="text-dark text-decoration-none">
+               <img src="{{ post_images.pop }}" class="card-img-top" alt="{{ post.title }}-img" style="height: 10rem; object-fit: cover;">
+               <div class="card-body">
+                   <h6 class="card-title text-center" style="height: 2rem">{{ post.title }}</h6>
+               </div>
+               </a>
+           </div>
+        </div>
+{% endfor %}
+</div>

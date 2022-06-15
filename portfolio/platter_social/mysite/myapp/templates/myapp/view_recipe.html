@@ -1,0 +1,42 @@
+{% extends 'myapp/base.html' %}
+{% block body %}
+    <div class="row my-4 mx-auto">
+        <img src="{{ recipe.recipe_image.url }}" class="img col col-md-3">
+        <div class="col col-md-7">
+            <h2 class="text-capitalize">{{ recipe.title }}</h2>
+            <h6><b>Yield:</b> <i>{{ recipe.recipe_yield }}</i></h6>
+            <h6><b>Prep time:</b> <i>{{ recipe.prep_time }}</i></h6>
+            <h6><b>Cook time:</b> <i>{{ recipe.cook_time }}</i></h6>
+            <h6><b>Total time:</b> <i>{{ recipe.total_time }}</i></h6>
+        </div>
+        <div class="col">
+            <form method="GET" target="_blank">
+                <button type="submit" name="printRecipe" class="btn btn-sm btn-outline-primary w-100 mt-2">Print Recipe</button>
+            </form>
+            <form method="POST">
+                {% csrf_token %}
+                <button type="submit" name="addCookBook" class="btn btn-sm btn-outline-primary w-100 mt-2">
+                    {% if recipe_in_book %}
+                        Remove From Recipe Book
+                    {% else %}
+                        Add to Recipe Book
+                    {% endif %}
+                </button>
+            </form>
+        </div>
+    </div>
+    <hr>
+    <h3>Ingredients:</h3>
+    <ul>
+        {% for ingredient in ingredients %}
+            <li>{{ ingredient }}</li>
+        {% endfor %}
+    </ul>
+    <hr>
+    <h3>Directions:</h3>
+    <ol>
+        {% for direction in directions %}
+            <li>{{ direction }}</li>
+        {% endfor %}
+    </ol>
+{% endblock %}

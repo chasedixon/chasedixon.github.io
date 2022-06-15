@@ -1,0 +1,13 @@
+{% extends 'myapp/base.html' %}
+{% block body %}
+{% load crispy_forms_tags %}
+<div class="card col-md-8 offset-2 p-5 mt-3 bg-light">
+    <h1 class="text-center">Register</h1>
+    <form method="POST">
+        {% csrf_token %}
+        {{ register_form|crispy }}
+        <button class="btn btn-primary" type="submit">Register</button>
+    </form>
+    <p class="text-center">If you already have an account, <a href="/login">login</a> instead.</p>
+</div>
+{% endblock %}
